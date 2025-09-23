@@ -145,6 +145,28 @@ typedef enum TMC9660ParamStatus_ {
 
 /*** TMC-API wrapper functions ************************************************/
 //extern void tmc9660_readWriteSPI(uint16_t icID, uint8_t *data, size_t dataLength);
+
+/**
+ * @brief UART wrapper function:
+ *
+ * This function serves as the TMC-API's access to the real UART hardware inside
+ * the application. The TMC-API functions will call this function every time
+ * they have to interact with UART hardware.
+ * Your application code must provide this function.
+ *
+ * @param icID
+ *        The IC to communicate with. This will be set to the icID you pass
+ *        into all the other TMC-API TMC9660 functions.
+ * @param data
+ *        A pointer to the data bytes to send out via UART.
+ *        The reply data must be written into this buffer
+ * @param writeLength
+ *        The amount of bytes to send
+ * @param readLength
+ *        The amount of bytes to receive
+ *
+ * @return Return false if receiving the requested data failed, true otherwise.
+ */
 extern bool tmc9660_readWriteUART(uint16_t icID, uint8_t *data, size_t writeLength, size_t readLength);
 
 #if TMC_API_TMC9660_FAULT_PIN_SUPPORTED != 0
