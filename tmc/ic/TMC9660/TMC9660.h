@@ -37,6 +37,18 @@
 #define TMC_API_TMC9660_FAULT_PIN_SUPPORTED 0
 #endif
 
+// Set this if you want to have SPI polling continue the polling
+// transaction after receiving a non-BUSY reply. This requires your
+// SPI wrapper function implementation (tmc9660_readWriteSPI) to be capable
+// of keeping an SPI transaction going (aka. chip select staying asserted)
+// while returning the first byte of data to the TMC-API. Refer to
+// the "keepCSNAsserted" parameter of the function for more details.
+#ifndef TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING
+//#define TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING 1
+#define TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING 0
+#endif
+
+
 /*** TMC9660 constants ********************************************************/
 typedef enum TMC9660APIError_ {
     // General API errors
@@ -176,8 +188,43 @@ typedef enum TMC9660ParamStatus_ {
     TMC9660_PARAMSTATUS_CMD_LOADED                = 101, // Command successfully loaded into script memory
 } TMC9660ParamStatus;
 
+typedef enum TMC9660ParamSPIStatus_ {
+    TMC9660_PARAMSPISTATUS_OK             = 0xAD,
+    TMC9660_PARAMSPISTATUS_FIRST_CMD      = 0x0C,
+    TMC9660_PARAMSPISTATUS_NOT_READY      = 0x00,
+} TMC9660ParamSPIStatus;
+
+
 /*** TMC-API wrapper functions ************************************************/
-//extern void tmc9660_readWriteSPI(uint16_t icID, uint8_t *data, size_t dataLength);
+// These function must be implemented in your application
+
+/**
+ * @brief SPI wrapper function to be implemented in the user application.
+ *
+ * This function serves as the TMC-API's access to the real SPI hardware inside
+ * the application. The TMC-API functions will call this function every time
+ * they have to interact with SPI hardware.
+ * Your application code must provide this function.
+ *
+ * @param icID
+ *             The IC to communicate with. This will be set to the icID you pass
+ *             into all the other TMC-API TMC9660 functions.
+ * @param data
+ *             The IC to communicate with. This will be set to the icID you pass
+ *             into all the other TMC-API TMC9660 functions.
+ * @param dataLength
+ *             The amount of bytes to send & receive
+ * @param keepCSNAsserted
+ *             Whether to keep the chip select signal asserted after the bytes
+ *             were sent & received.
+ *             If TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING == 0 (the default),
+ *             this parameter will always be false and you can ignore it.
+ *             If you defined TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING == 1,
+ *             you must support it, including this function being called
+ *             with dataLength=0 and keepCSNAsserted=false to finish an
+ *             ongoing SPI transaction without sending any further data.
+ */
+extern void tmc9660_readWriteSPI(uint16_t icID, uint8_t *data, size_t dataLength, bool keepCSNAsserted);
 
 /**
  * @brief UART wrapper function:
@@ -237,9 +284,49 @@ int32_t tmc9660_bl_getAddonInfo(uint16_t icID, uint32_t *id, uint32_t *version);
 int32_t tmc9660_param_sendCommand(uint16_t icID, uint8_t cmd, uint16_t type, uint8_t index, uint32_t writeValue, uint32_t *readValue);
 
 // Special case commands: These functions run commands that are edge cases of the underlying protocol
+// Note: readTMCLMemory is only available when communicating via UART.
 int32_t tmc9660_param_getVersionASCII(uint16_t icID, uint8_t *versionString);
 int32_t tmc9660_param_readTMCLMemory(uint16_t icID, uint32_t cmdIndex, uint8_t *command);
 int32_t tmc9660_param_returnToBootloader(uint16_t icID);
+
+/**
+ * @brief SPI pipeline access function
+ *
+ * This function serves as a low level access function to implement fast, pipelined
+ * SPI communication. Each call corresponds to one SPI request to the TMC9660.
+ *
+ * @param icID
+ *        The IC to communicate with. This gets forwarded to callback functions.
+ * @param cmd
+ *        The parameter mode command to send.
+ * @param type
+ *        The parameter mode type to send.
+ * @param index
+ *        The parameter mode index to send.
+ * @param requestValue
+ *        The parameter mode value to send.
+ * @param replyValue
+ *        The reply value to receive. This function will write the received reply word
+ *        into this pointer. If the pointer is NULL, this will be skipped.
+ *        Note that when requireReply is false, no reply is guaranteed to actually arrive.
+ * @param requireReply
+ *        Whether to poll the TMC9660 to receive a reply. Only set this if a prior request
+ *        was sent that did not yet get a reply.
+ * @param timeout_us
+ *        The timeout for the polling done when requireReply is set.
+ *
+ * @return Returns a negative error status code, or the positive TMCL reply status byte.
+ */
+int32_t tmc9660_param_sendPipelinedSPICommand(
+        uint16_t icID,
+        uint8_t cmd,
+        uint16_t type,
+        uint8_t index,
+        uint32_t requestValue,
+        uint32_t *replyValue,
+        bool requireReply,
+        uint32_t timeout_us
+        );
 
 uint32_t tmc9660_param_getParameter(uint16_t icID, uint16_t type);
 bool tmc9660_param_setParameter(uint16_t icID, uint16_t type, uint32_t value);
