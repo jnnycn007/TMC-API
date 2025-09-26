@@ -40,5 +40,5 @@ Note that in order to enable the TMC-API support for using the fault pin, the de
 
 
 ### Sharing the CRC table with other TMC-API chips
-The TMC9660 UART protocol uses an 8 bit CRC. For calculating this, a table-based algorithm is used. This table (tmcCRCTable_Poly7Reflected[256]) is 256 bytes big and identical across multiple different Trinamic chips (i.e. TMC2209).
-If multiple Trinamic chips are being used in the same project, avoiding redundant copies of this table could save memory. It is possible to substitute this CRC table with another CRC table.
+The TMC9660 protocol uses an 8 bit CRC for UART communication, and a 32 bit CRC for addon uploading. For calculating these, a table-based algorithm is used. The 8-bit table (tmcCRCTable_Poly7Reflected[256]) is 256 bytes big, the 32-bit table (tmcCRCTable_Poly104C11DB7Reflected[256]) is 1024 bytes big.
+If multiple Trinamic chips are being used in the same project, avoiding redundant copies of this table can save program memory size by sharing identical CRC tables across different ICs.

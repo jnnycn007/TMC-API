@@ -38,6 +38,9 @@ typedef enum TMC9660APIError_ {
 
     // Chip-specific API errors
     TMC9660_ERROR_FAULTN_TIMEOUT        = -16, // Note: Used in UblTools code generation
+    TMC9660_ERROR_INVALID_ADDON         = -17,
+    TMC9660_ERROR_NO_ADDON_SPACE        = -18,
+    TMC9660_ERROR_INVALID_ADDON_INSTALL = -19, // Note: Used in UblTools code generation
 } TMC9660APIError;
 
 typedef enum TMC9660BusType_ {
@@ -68,6 +71,8 @@ typedef enum TMC9660BlCommand_ {
     TMC9660_BLCMD_WRITE_16_INC       = 21,
     TMC9660_BLCMD_WRITE_8            = 22,
     TMC9660_BLCMD_WRITE_8_INC        = 23,
+    TMC9660_BLCMD_WRITE_CHECKSUM     = 26,
+    TMC9660_BLCMD_START_APP          = 27,
     TMC9660_BLCMD_NO_OP              = 29,
     TMC9660_BLCMD_OTP_LOAD           = 30,
     TMC9660_BLCMD_OTP_BURN           = 31,
@@ -206,6 +211,14 @@ void tmc9660_waitForFaultDeassertion(uint16_t icID);
 
 /*** TMC9660 Bootloader Mode functions ****************************************/
 int32_t tmc9660_bl_sendCommand(uint16_t icID, uint8_t cmd, uint32_t writeValue, uint32_t *readValue);
+
+// Addon upload
+int32_t tmc9660_bl_installAddon(uint16_t icID, const uint8_t *addon, uint32_t addonSize);
+
+// Addon verification
+// Returns a negative value on error, 0 if no addon is installed, 1 if an addon is installed.
+// The id and version are only written if an addon is installed (return value 1).
+int32_t tmc9660_bl_getAddonInfo(uint16_t icID, uint32_t *id, uint32_t *version);
 
 /*** TMC9660 Parameter Mode functions *****************************************/
 int32_t tmc9660_param_sendCommand(uint16_t icID, uint8_t cmd, uint16_t type, uint8_t index, uint32_t writeValue, uint32_t *readValue);
