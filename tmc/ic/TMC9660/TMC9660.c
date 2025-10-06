@@ -95,10 +95,26 @@ static uint8_t CRC8(uint8_t *data, uint32_t bytes);
 
 /*** General functions implementation ********************************************/
 #if TMC_API_TMC9660_FAULT_PIN_SUPPORTED != 0
-void tmc9660_waitForFaultDeassertion(uint16_t icID)
+bool tmc9660_waitForFaultDeassertion(uint16_t icID, uint32_t timeout_us)
 {
-    // ToDo: Support timeouts
-    while (tmc9660_isFaultPinAsserted(icID));
+    uint32_t timestamp = 0;
+    if (timeout_us != 0)
+    {
+        timestamp = tmc_getMicrosecondTimestamp();
+    }
+
+    while (tmc9660_isFaultPinAsserted(icID))
+    {
+        if (timeout_us == 0)
+            continue;
+
+        // Timeout reached? If yes, return failure
+        if ((tmc_getMicrosecondTimestamp() - timestamp) > timeout_us)
+            return false;
+    }
+
+    // Fault deassertion completed, return success
+    return true;
 }
 #endif
 

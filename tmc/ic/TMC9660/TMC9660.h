@@ -206,7 +206,7 @@ void tmc_delayMicroseconds(uint32_t microseconds);
 
 /*** TMC9660 general functions ************************************************/
 #if TMC_API_TMC9660_FAULT_PIN_SUPPORTED != 0
-void tmc9660_waitForFaultDeassertion(uint16_t icID);
+bool tmc9660_waitForFaultDeassertion(uint16_t icID, uint32_t timeout_us);
 #endif
 
 /*** TMC9660 Bootloader Mode functions ****************************************/
