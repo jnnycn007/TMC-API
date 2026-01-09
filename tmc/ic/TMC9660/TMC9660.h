@@ -16,13 +16,26 @@
 * These can be commented in/out here or defined from the build system.
 *******************************************************************************/
 
-// Uncomment if you want to save space.....
-// and put the table into your own .c file
+// Set this if your application uses multiple Trinamic ICs with the same
+// CRC polynomials and you want to save data size.
+// When set, the TMC-API expects the required CRC tables to defined in your
+// application. The tables needed by this IC are tmcCRCTable_Poly7Reflected
+// and tmcCRCTable_Poly104C11DB7Reflected. See TMC9660.c for their full definition.
+#ifndef TMC_API_EXTERNAL_CRC_TABLE
 //#define TMC_API_EXTERNAL_CRC_TABLE 1
+#define TMC_API_EXTERNAL_CRC_TABLE 0
+#endif
 
-// Uncomment if you want to use fault pin related features
-// If enabled, this requires an additional wrapper function
+// If your application includes a monitoring connection of the FAULTN pin
+// of the TMC9660 and you want to use functions related to it in the TMC-API.
+// When enabled, this allows for faster runtime bootstrapping by having the
+// TMC9660 signal completion of bootstrap steps via the FAULTN pin.
+// If you set this define, you must supply the tmc9660_isFaultPinAsserted
+// wrapper function.
+#ifndef TMC_API_TMC9660_FAULT_PIN_SUPPORTED
 //#define TMC_API_TMC9660_FAULT_PIN_SUPPORTED 1
+#define TMC_API_TMC9660_FAULT_PIN_SUPPORTED 0
+#endif
 
 /*** TMC9660 constants ********************************************************/
 typedef enum TMC9660APIError_ {

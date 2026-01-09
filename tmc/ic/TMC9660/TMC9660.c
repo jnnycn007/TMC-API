@@ -21,7 +21,7 @@ void tmc_delayMicroseconds(uint32_t microseconds)
     while (tmc_getMicrosecondTimestamp() - timestamp < microseconds);
 }
 
-#ifdef TMC_API_EXTERNAL_CRC_TABLE
+#if TMC_API_EXTERNAL_CRC_TABLE
 extern const uint8_t tmcCRCTable_Poly7Reflected[256];
 extern const uint32_t tmcCRCTable_Poly104C11DB7Reflected[256];
 #else
