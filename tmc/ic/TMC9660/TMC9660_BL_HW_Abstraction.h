@@ -689,4 +689,72 @@ static inline uint16_t field_update16(uint16_t data, RegisterField16 field, uint
 #define CONFIG_BOOT_1F_RESERVED_SHIFT                           0
 #define CONFIG_BOOT_1F_RESERVED_FIELD                           ((RegisterField16) { CONFIG_BOOT_1F_RESERVED_MASK, CONFIG_BOOT_1F_RESERVED_SHIFT, CONFIG_BOOT_1F_RESERVED, false })
 
+// IOMatrix addresses
+#define IOMATRIX_PIN_7_0                                        0x48013000
+#define IOMATRIX_PIN_15_8                                       0x48013004
+#define IOMATRIX_PIN_18_16                                      0x48013008
+
+// IOMATRIX_PIN_7_0 fields
+#define IOMATRIX_PIN_7_0_ALTF0_MASK                             0x0000000F
+#define IOMATRIX_PIN_7_0_ALTF0_SHIFT                            0
+#define IOMATRIX_PIN_7_0_ALTF0_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF0_MASK, IOMATRIX_PIN_7_0_ALTF0_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF1_MASK                             0x000000F0
+#define IOMATRIX_PIN_7_0_ALTF1_SHIFT                            4
+#define IOMATRIX_PIN_7_0_ALTF1_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF1_MASK, IOMATRIX_PIN_7_0_ALTF1_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF2_MASK                             0x00000F00
+#define IOMATRIX_PIN_7_0_ALTF2_SHIFT                            8
+#define IOMATRIX_PIN_7_0_ALTF2_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF2_MASK, IOMATRIX_PIN_7_0_ALTF2_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF3_MASK                             0x0000F000
+#define IOMATRIX_PIN_7_0_ALTF3_SHIFT                            12
+#define IOMATRIX_PIN_7_0_ALTF3_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF3_MASK, IOMATRIX_PIN_7_0_ALTF3_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF4_MASK                             0x000F0000
+#define IOMATRIX_PIN_7_0_ALTF4_SHIFT                            16
+#define IOMATRIX_PIN_7_0_ALTF4_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF4_MASK, IOMATRIX_PIN_7_0_ALTF4_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF5_MASK                             0x00F00000
+#define IOMATRIX_PIN_7_0_ALTF5_SHIFT                            20
+#define IOMATRIX_PIN_7_0_ALTF5_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF5_MASK, IOMATRIX_PIN_7_0_ALTF5_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF6_MASK                             0x0F000000
+#define IOMATRIX_PIN_7_0_ALTF6_SHIFT                            24
+#define IOMATRIX_PIN_7_0_ALTF6_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF6_MASK, IOMATRIX_PIN_7_0_ALTF6_SHIFT, IOMATRIX_PIN_7_0, false })
+#define IOMATRIX_PIN_7_0_ALTF7_MASK                             0xF0000000
+#define IOMATRIX_PIN_7_0_ALTF7_SHIFT                            28
+#define IOMATRIX_PIN_7_0_ALTF7_FIELD                            ((RegisterField32) { IOMATRIX_PIN_7_0_ALTF7_MASK, IOMATRIX_PIN_7_0_ALTF7_SHIFT, IOMATRIX_PIN_7_0, false })
+
+// IOMATRIX_PIN_15_8 fields
+#define IOMATRIX_PIN_15_8_ALTF8_MASK                            0x0000000F
+#define IOMATRIX_PIN_15_8_ALTF8_SHIFT                           0
+#define IOMATRIX_PIN_15_8_ALTF8_FIELD                           ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF8_MASK, IOMATRIX_PIN_15_8_ALTF8_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF9_MASK                            0x000000F0
+#define IOMATRIX_PIN_15_8_ALTF9_SHIFT                           4
+#define IOMATRIX_PIN_15_8_ALTF9_FIELD                           ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF9_MASK, IOMATRIX_PIN_15_8_ALTF9_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF10_MASK                           0x00000F00
+#define IOMATRIX_PIN_15_8_ALTF10_SHIFT                          8
+#define IOMATRIX_PIN_15_8_ALTF10_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF10_MASK, IOMATRIX_PIN_15_8_ALTF10_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF11_MASK                           0x0000F000
+#define IOMATRIX_PIN_15_8_ALTF11_SHIFT                          12
+#define IOMATRIX_PIN_15_8_ALTF11_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF11_MASK, IOMATRIX_PIN_15_8_ALTF11_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF12_MASK                           0x000F0000
+#define IOMATRIX_PIN_15_8_ALTF12_SHIFT                          16
+#define IOMATRIX_PIN_15_8_ALTF12_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF12_MASK, IOMATRIX_PIN_15_8_ALTF12_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF13_MASK                           0x00F00000
+#define IOMATRIX_PIN_15_8_ALTF13_SHIFT                          20
+#define IOMATRIX_PIN_15_8_ALTF13_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF13_MASK, IOMATRIX_PIN_15_8_ALTF13_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF14_MASK                           0x0F000000
+#define IOMATRIX_PIN_15_8_ALTF14_SHIFT                          24
+#define IOMATRIX_PIN_15_8_ALTF14_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF14_MASK, IOMATRIX_PIN_15_8_ALTF14_SHIFT, IOMATRIX_PIN_15_8, false })
+#define IOMATRIX_PIN_15_8_ALTF15_MASK                           0xF0000000
+#define IOMATRIX_PIN_15_8_ALTF15_SHIFT                          28
+#define IOMATRIX_PIN_15_8_ALTF15_FIELD                          ((RegisterField32) { IOMATRIX_PIN_15_8_ALTF15_MASK, IOMATRIX_PIN_15_8_ALTF15_SHIFT, IOMATRIX_PIN_15_8, false })
+
+// IOMATRIX_PIN_18_16 fields
+#define IOMATRIX_PIN_18_16_ALTF16_MASK                          0x0000000F
+#define IOMATRIX_PIN_18_16_ALTF16_SHIFT                         0
+#define IOMATRIX_PIN_18_16_ALTF16_FIELD                         ((RegisterField32) { IOMATRIX_PIN_18_16_ALTF16_MASK, IOMATRIX_PIN_18_16_ALTF16_SHIFT, IOMATRIX_PIN_18_16, false })
+#define IOMATRIX_PIN_18_16_ALTF17_MASK                          0x000000F0
+#define IOMATRIX_PIN_18_16_ALTF17_SHIFT                         4
+#define IOMATRIX_PIN_18_16_ALTF17_FIELD                         ((RegisterField32) { IOMATRIX_PIN_18_16_ALTF17_MASK, IOMATRIX_PIN_18_16_ALTF17_SHIFT, IOMATRIX_PIN_18_16, false })
+#define IOMATRIX_PIN_18_16_ALTF18_MASK                          0x00000F00
+#define IOMATRIX_PIN_18_16_ALTF18_SHIFT                         8
+#define IOMATRIX_PIN_18_16_ALTF18_FIELD                         ((RegisterField32) { IOMATRIX_PIN_18_16_ALTF17_MASK, IOMATRIX_PIN_18_16_ALTF18_SHIFT, IOMATRIX_PIN_18_16, false })
+
 #endif /* TMC9660_BL_HW_ABSTRACTION_H_ */
