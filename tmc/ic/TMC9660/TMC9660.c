@@ -71,7 +71,7 @@ int32_t tmc9660_bl_sendCommand(uint16_t icID, uint8_t cmd, uint32_t writeValue, 
         return tmc9660_bl_sendCommand_UART(icID, cmd, writeValue, readValue);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 static int32_t tmc9660_bl_sendCommand_UART(uint16_t icID, uint8_t cmd, uint32_t writeValue, uint32_t *readValue)
@@ -89,7 +89,7 @@ static int32_t tmc9660_bl_sendCommand_UART(uint16_t icID, uint8_t cmd, uint32_t 
     data[7] = CRC8(data, 7);
 
     if (!tmc9660_readWriteUART(icID, &data[0], 8, 8)) {
-      return -1;
+      return TMC9660_ERROR_INVALID_BUS;
     }
 
     if (readValue)
@@ -139,7 +139,7 @@ int32_t tmc9660_param_sendCommand(uint16_t icID, uint8_t cmd, uint16_t type, uin
         return tmc9660_param_sendCommand_UART(icID, cmd, type, index, writeValue, readValue);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 int32_t tmc9660_param_getVersionASCII(uint16_t icID, uint8_t *versionString)
@@ -155,7 +155,7 @@ int32_t tmc9660_param_getVersionASCII(uint16_t icID, uint8_t *versionString)
         return tmc9660_param_getVersionASCII_UART(icID, versionString);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 int32_t tmc9660_param_readTMCLMemory(uint16_t icID, uint32_t cmdIndex, uint8_t *command)
@@ -171,7 +171,7 @@ int32_t tmc9660_param_readTMCLMemory(uint16_t icID, uint32_t cmdIndex, uint8_t *
         return tmc9660_param_readTMCLMemory_UART(icID, cmdIndex, command);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 int32_t tmc9660_param_returnToBootloader(uint16_t icID)
@@ -187,7 +187,7 @@ int32_t tmc9660_param_returnToBootloader(uint16_t icID)
         return tmc9660_param_returnToBootloader_UART(icID);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 static bool sendRequestUART(uint16_t icID, uint8_t cmd, uint16_t type, uint8_t index, uint32_t writeValue, uint8_t *data, TMC9660BusAddresses addresses, bool expectReply)
@@ -213,17 +213,17 @@ static int32_t tmc9660_param_sendCommand_UART(uint16_t icID, uint8_t cmd, uint16
     TMC9660BusAddresses addresses = tmc9660_getBusAddresses(icID);
 
     if (!sendRequestUART(icID, cmd, type, index, writeValue, data, addresses, true))
-        return -2;
+        return TMC9660_ERROR_TIMEOUT;
 
     uint8_t syncByte = 0x01 | (addresses.device);
 
     // Unpack the reply
     if (data[0] != addresses.host)
-        return -3;
+        return TMC9660_ERROR_WRONG_ADDR;
     if (data[1] != syncByte)
-        return -4;
+        return TMC9660_ERROR_INVALID_REPLY;
     if (data[8] != calcParamChecksum(&data[0], 8))
-        return -5;
+        return TMC9660_ERROR_INVALID_CHECKSUM;
 
     if (readValue)
     {
@@ -242,7 +242,7 @@ static int32_t tmc9660_param_getVersionASCII_UART(uint16_t icID, uint8_t *versio
     TMC9660BusAddresses addresses = tmc9660_getBusAddresses(icID);
 
     if (!sendRequestUART(icID, TMC9660_CMD_GET_VERSION, 0, 0, 0, data, addresses, true))
-        return -2;
+        return TMC9660_ERROR_TIMEOUT;
 
     versionString[0] = data[1];
     versionString[1] = data[2];
@@ -262,7 +262,7 @@ static int32_t tmc9660_param_readTMCLMemory_UART(uint16_t icID, uint32_t cmdInde
     TMC9660BusAddresses addresses = tmc9660_getBusAddresses(icID);
 
     if (!sendRequestUART(icID, TMC9660_CMD_READ_MEM, 0, 0, cmdIndex, data, addresses, true))
-        return -2;
+        return TMC9660_ERROR_TIMEOUT;
 
     command[0] = data[1];
     command[1] = data[2];
@@ -281,7 +281,7 @@ static int32_t tmc9660_param_returnToBootloader_UART(uint16_t icID)
     TMC9660BusAddresses addresses = tmc9660_getBusAddresses(icID);
 
     if (!sendRequestUART(icID, TMC9660_CMD_BOOT, 0x981, 0x2, 0xA3B4C5D6, data, addresses, false))
-        return -2;
+        return TMC9660_ERROR_TIMEOUT;
 
     return 0;
 }
@@ -299,7 +299,7 @@ int32_t tmc9660_reg_sendCommand(uint16_t icID, uint8_t cmd, uint16_t registerOff
         return tmc9660_reg_sendCommand_UART(icID, cmd, registerOffset, registerBlock, writeValue, readValue);
     }
 
-    return -1;
+    return TMC9660_ERROR_INVALID_BUS;
 }
 
 int32_t tmc9660_reg_getVersionASCII(uint16_t icID, uint8_t *versionString)
@@ -334,15 +334,15 @@ static int32_t tmc9660_reg_sendCommand_UART(uint16_t icID, uint8_t cmd, uint16_t
     data[8] = calcParamChecksum(&data[0], 8);
 
     if (!tmc9660_readWriteUART(icID, &data[0], 9, 9))
-        return -2;
+        return TMC9660_ERROR_TIMEOUT;
 
     // Unpack the reply
     if (data[0] != addresses.host)
-        return -3;
+        return TMC9660_ERROR_WRONG_ADDR;
     if (data[1] != syncByte)
-        return -4;
+        return TMC9660_ERROR_INVALID_REPLY;
     if (data[8] != calcParamChecksum(&data[0], 8))
-        return -5;
+        return TMC9660_ERROR_INVALID_CHECKSUM;
 
     if (readValue)
     {

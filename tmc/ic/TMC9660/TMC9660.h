@@ -25,6 +25,21 @@
 //#define TMC_API_TMC9660_FAULT_PIN_SUPPORTED 1
 
 /*** TMC9660 constants ********************************************************/
+typedef enum TMC9660APIError_ {
+    // General API errors
+    TMC9660_ERROR_INVALID_BUS           = -1,
+    TMC9660_ERROR_TIMEOUT               = -2,
+    TMC9660_ERROR_WRONG_ADDR            = -3,
+    TMC9660_ERROR_INVALID_REPLY         = -4,
+    // Note: This reports invalid reply checksums.
+    // Invalid request checksums get reported in the reply's status,
+    // not the TMC-API access function error code.
+    TMC9660_ERROR_INVALID_CHECKSUM      = -5,
+
+    // Chip-specific API errors
+    TMC9660_ERROR_FAULTN_TIMEOUT        = -16, // Note: Used in UblTools code generation
+} TMC9660APIError;
+
 typedef enum TMC9660BusType_ {
     TMC9660_BUS_SPI,
     TMC9660_BUS_UART,
