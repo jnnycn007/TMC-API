@@ -43,6 +43,17 @@ Additionally, the following function may be implemented if your application inte
 Note that in order to enable the TMC-API support for using the fault pin, the define TMC_API_TMC9660_FAULT_PIN_SUPPORTED must be set to 1. This can be done either by uncommenting the define at the top of the TMC9660.h header file, or by setting it as part of your build system.
 
 
+## How to integrate: Compile-time options
+The TMC-API implementation for the TMC9660 features a few compile-time options.
+These can be found at the beginning of the TMC9660.h file.
+
+To change these compile-time configurations, simply set them as part of your build system, or edit them in the TMC9660.h file.
+
+The available options are:
+- `TMC_API_EXTERNAL_CRC_TABLE`: Save code size by sharing CRC data structures with other TMC-API chips.
+- `TMC_API_TMC9660_FAULT_PIN_SUPPORTED`: Add support for using the TMC9660 FAULTN pin.
+- `TMC_API_TMC9660_ENABLE_SPI_POLL_RESUMING`: Slightly improve the SPI access latency with more fine-grained SPI datagram control.
+
 ### Sharing the CRC table with other TMC-API chips
 The TMC9660 protocol uses an 8 bit CRC for UART communication, and a 32 bit CRC for addon uploading. For calculating these, a table-based algorithm is used. The 8-bit table (`tmcCRCTable_Poly7Reflected[256]`) is 256 bytes big, the 32-bit table (`tmcCRCTable_Poly104C11DB7Reflected[256]`) is 1024 bytes big.
 If multiple Trinamic chips are being used in the same project, avoiding redundant copies of this table can save program memory size by sharing identical CRC tables across different ICs.
