@@ -34,6 +34,9 @@ For the ICs with the new implementation, please consult their [README](https://g
 
 ## Changelog
 
+**Version 3.11.9: (WIP)**
+- ...
+
 **Version 3.11.8: (Released)**
 - Included TMC5221 and TMC5222 to the project.
 
