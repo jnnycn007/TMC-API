@@ -34,9 +34,8 @@ For the ICs with the new implementation, please consult their [README](https://g
 
 ## Changelog
 
-**Version 3.11.8: (WIP)**
+**Version 3.11.8: (Released)**
 - Included TMC5221 and TMC5222 to the project.
-- ...
 
 **Version 3.11.7: (Released)**
 - Improved byte concatenation logic for assembling larger integer values.
